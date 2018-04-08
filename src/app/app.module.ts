@@ -1,8 +1,7 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
-
 import { AppComponent } from "./app.component";
-import { TaskService } from "./services/task.service";
+import { LocalTaskService } from "./services/local-task.service";
 import { HttpClientModule } from "@angular/common/http";
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { FlexLayoutModule } from "@angular/flex-layout";
@@ -12,7 +11,6 @@ import {
   MatCheckboxModule,
   MatDatepickerModule,
   MatDialogModule,
-  MatFormField,
   MatFormFieldModule,
   MatGridListModule,
   MatIconModule,
@@ -33,7 +31,19 @@ import { EditTaskComponent } from "./pages/edit-task.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HomeComponent } from "./pages/home.component";
 import { IsDonePipe } from "./pipes/is-done.pipe";
-import {ActivatedRoute, RouterModule} from '@angular/router';
+
+import {AngularFireDatabaseModule} from 'angularfire2/database-deprecated';
+import {AngularFireModule} from 'angularfire2';
+import {FirebaseTaskService} from './services/firebase-task.service';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAb-QD_jDPPA4mM0a8L_i7dp2sLbuz_YBI",
+  authDomain: "tasklist-5af1a.firebaseapp.com",
+  databaseURL: "https://tasklist-5af1a.firebaseio.com",
+  projectId: "tasklist-5af1a",
+  storageBucket: "tasklist-5af1a.appspot.com",
+  messagingSenderId: "381283576421"
+};
 
 @NgModule({
   declarations: [
@@ -47,6 +57,8 @@ import {ActivatedRoute, RouterModule} from '@angular/router';
     BrowserModule,
     CommonModule,
     HttpClientModule,
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireDatabaseModule,
     FormsModule,
     MatButtonModule,
     FlexLayoutModule,
@@ -73,7 +85,7 @@ import {ActivatedRoute, RouterModule} from '@angular/router';
     MatSlideToggleModule,
     AppRoutingModule
   ],
-  providers: [TaskService],
+  providers: [LocalTaskService, FirebaseTaskService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

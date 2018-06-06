@@ -22,7 +22,8 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 })
 export class HomeComponent implements OnInit {
   TaskList: Task[] = [];
-  TaskList$;
+  TaskList$: Observable<Task[]>;
+  // TaskList$: any; //Dev
 
   constructor(
     private _localTaskService: LocalTaskService,
@@ -39,10 +40,7 @@ export class HomeComponent implements OnInit {
       .do(d => console.log("Firebase: ", d));
   }
   getTasks() {
-    this._localTaskService.getTasks().subscribe(data => {
-      console.log("Data from local server: ", data);
-      this.TaskList$ = data;
-    });
+    this.TaskList$ = this._localTaskService.getTasks();
   }
 
   deleteTask(task: Task) {
